@@ -12,6 +12,7 @@ function getYesterday() {
 }
 
 function App() {
+  const [mapFocus, setMapFocus] = useState(null);
   const [activeTab, setActiveTab] = useState('events');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showEvents, setShowEvents] = useState(true);
@@ -57,6 +58,7 @@ function App() {
             satelliteSettings={satelliteSettings}
             showEvents={showEvents}
             showWeather={showWeather}
+            mapFocus={mapFocus}
           />
         </div>
         <Sidebar
@@ -70,6 +72,7 @@ function App() {
           onWeatherToggle={setShowWeather}
           collapsed={sidebarCollapsed}
           onCollapse={() => setSidebarCollapsed(c => !c)}
+          setMapFocus={setMapFocus}
         />
       </div>
     </div>

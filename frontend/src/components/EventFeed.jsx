@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useMap } from 'react-leaflet';
 
 const REFRESH_INTERVAL = 300; // seconds
 
@@ -19,9 +18,9 @@ function relativeTime(dateStr) {
 
 /**
  * EventFeed component — sidebar list of conflict events.
+ * @param {{ setMapFocus: Function }} props
  */
-function EventFeed() {
-  const map = useMap();
+function EventFeed({ setMapFocus }) {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,8 +61,8 @@ function EventFeed() {
   }, [loadEvents]);
 
   const flyToEvent = event => {
-    if (event.lat && event.lon) {
-      map.flyTo([event.lat, event.lon], 8, { animate: true, duration: 1.2 });
+    if (event.lat && event.lon && setMapFocus) {
+      setMapFocus([event.lat, event.lon]);
     }
   };
 
