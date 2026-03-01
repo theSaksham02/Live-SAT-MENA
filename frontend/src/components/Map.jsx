@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { MapContainer, TileLayer, LayersControl, useMapEvents } from 'react-leaflet';
+import { useState, useCallback, useEffect } from 'react';
+import { MapContainer, TileLayer, LayersControl, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import SatelliteLayer from './SatelliteLayer';
 import EventMarkers from './EventMarkers';
@@ -26,10 +26,24 @@ function ClickHandler() {
 }
 
 /**
- * Main Leaflet map component centered on MENA.
- * @param {{ satelliteSettings: object, showEvents: boolean, showWeather: boolean }} props
+ * Listens for mapFocus prop changes and flies to the target coordinates.
+ * @param {{ focusPoint: [number, number] }} props
  */
-function Map({ satelliteSettings, showEvents, showWeather }) {
+function MapFocusController({ focusPoint }) {
+  const map = useMap();
+  useEffect(() => {
+    if (focusPoint && focusPoint.length === 2) {
+      map.flyTo(focusPoint, 8, { animate: true, duration: 1.2 });
+    }
+  }, [focusPoint, map]);
+  return null;
+}
+
+/**
+ * Main Leaflet map component centered on MENA.
+ * @param {{ satelliteSettings: object, showEvents: boolean, showWeather: boolean, mapFocus: [number, number] }} props
+ */
+function Map({ satelliteSettings, showEvents, showWeather, mapFocus }) {
   return (
     <MapContainer
       center={[29, 42]}
@@ -71,6 +85,7 @@ function Map({ satelliteSettings, showEvents, showWeather }) {
       <EventMarkers visible={showEvents} />
       <WeatherOverlay visible={showWeather} />
 
+      <MapFocusController focusPoint={mapFocus} />
       <ClickHandler />
     </MapContainer>
   );

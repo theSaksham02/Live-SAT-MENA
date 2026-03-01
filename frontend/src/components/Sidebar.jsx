@@ -3,7 +3,7 @@ import LayerControls from './LayerControls';
 
 /**
  * Sidebar component with tabbed interface.
- * @param {{ activeTab: string, onTabChange: Function, satelliteSettings: object, onSatelliteChange: Function, showEvents: boolean, onEventsToggle: Function, showWeather: boolean, onWeatherToggle: Function, collapsed: boolean, onCollapse: Function }} props
+ * @param {{ activeTab: string, onTabChange: Function, satelliteSettings: object, onSatelliteChange: Function, showEvents: boolean, onEventsToggle: Function, showWeather: boolean, onWeatherToggle: Function, collapsed: boolean, onCollapse: Function, setMapFocus: Function }} props
  */
 function Sidebar({
   activeTab,
@@ -16,6 +16,7 @@ function Sidebar({
   onWeatherToggle,
   collapsed,
   onCollapse,
+  setMapFocus,
 }) {
   return (
     <aside className={`sidebar${collapsed ? ' collapsed' : ''}`}>
@@ -45,7 +46,7 @@ function Sidebar({
         </div>
 
         <div className="tab-content">
-          {activeTab === 'events' && <EventFeed />}
+          {activeTab === 'events' && <EventFeed setMapFocus={setMapFocus} />}
           {activeTab === 'layers' && (
             <LayerControls
               satelliteSettings={satelliteSettings}
